@@ -1,0 +1,2 @@
+quiet: load 3.40
+13:56  up  1:21, 1 user, load averages: 4.25 7.16 5.45

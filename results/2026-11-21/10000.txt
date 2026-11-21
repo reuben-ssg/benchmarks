@@ -1,0 +1,40 @@
+Benchmark 1: reuben baseline, bare (5 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    1.723 s   ±   0.030 s      1.695 s   …   1.765 s
+  Memory       237.1 MiB ±     0.2 MiB    236.8 MiB …   237.4 MiB
+ 
+Benchmark 2: reuben, bare (5 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    0.685 s   ±   0.022 s      0.657 s   …   0.710 s            -60.2%  (2.5x faster)
+  Memory       133.0 MiB ±     0.1 MiB    132.9 MiB …   133.0 MiB          -43.9%  (1.8x less)
+ 
+Benchmark 3: reuben, bare, footnote back-links off (5 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    0.670 s   ±   0.023 s      0.643 s   …   0.701 s            -61.1%  (2.6x faster)
+  Memory       133.4 MiB ±     0.2 MiB    133.2 MiB …   133.7 MiB          -43.7%  (1.8x less)
+ 
+Benchmark 4: reuben, bare + checks (5 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    0.994 s   ±   0.028 s      0.964 s   …   1.038 s            -42.3%  (1.7x faster)
+  Memory       147.2 MiB ±     0.3 MiB    146.8 MiB …   147.5 MiB          -37.9%  (1.6x less)
+ 
+Benchmark 5: hugo, bare, highlighting on (5 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    1.382 s   ±   0.026 s      1.345 s   …   1.417 s            -19.8%
+  Memory       930.4 MiB ±    48.5 MiB    854.6 MiB …   972.1 MiB         +292.4%  (3.9x more)
+ 
+Benchmark 6: hugo, bare, highlighting off (5 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    1.091 s   ±   0.031 s      1.056 s   …   1.130 s            -36.7%  (1.6x faster)
+  Memory       763.9 MiB ±    27.0 MiB    736.5 MiB …   804.0 MiB         +222.2%  (3.2x more)
+ 
+Benchmark 7: zola, bare, highlighting on (5 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    1.612 s   ±   0.027 s      1.585 s   …   1.644 s             -6.5%
+  Memory       291.6 MiB ±     0.2 MiB    291.4 MiB …   291.9 MiB          +23.0%
+ 
+Benchmark 8: zola, bare, highlighting off (5 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    0.747 s   ±   0.014 s      0.734 s   …   0.766 s            -56.6%  (2.3x faster)
+  Memory       251.9 MiB ±     0.5 MiB    251.4 MiB …   252.6 MiB           +6.3%
+ 

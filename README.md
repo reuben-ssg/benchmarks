@@ -35,6 +35,7 @@ Each run writes `results/latest/`, including the tool versions and machine load;
 
 ## Results
 
+`results/2026-11-21/` is the Reuben lean branch, the work planned for 0.2.0, against Hugo and Zola.
 `results/2026-11-20/` is the first run made with these scripts: the lean spike against Hugo and Zola.
 `results/2026-11-19/` holds the runs before this repository existed:
 
