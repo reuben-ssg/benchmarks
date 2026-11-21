@@ -1,0 +1,2 @@
+quiet: load 3.49
+20:28  up 3 days, 28 mins, 1 user, load averages: 3.93 9.31 9.60

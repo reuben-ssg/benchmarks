@@ -1,0 +1,4 @@
+10 base 38262 reuben 17572 noback 16972 hugo 25826 hugo-nohl 19006 zola 22410 zola-nohl 17190
+50 base 192404 reuben 88954 noback 85954 hugo 130032 hugo-nohl 95932 zola 112872 zola-nohl 86772
+1000 base 3863109 reuben 1794109 noback 1734109 hugo 2614757 hugo-nohl 1932757 zola 2271177 zola-nohl 1749177
+10000 base 38732709 reuben 18042709 noback 17442709 hugo 26248757 hugo-nohl 19428757 zola 22812777 zola-nohl 17592777

@@ -1,0 +1,7 @@
+date: 2026-11-21T01:21Z
+machine: Apple M3 Pro, 18 GiB, macOS 27.2.1
+reuben: reuben 0.1.1
+baseline: reuben 0.1.1
+hugo: hugo v0.170.1+withdeploy darwin/arm64 BuildDate=2026-11-17T16:38:13Z VendorInfo=Homebrew
+zola: zola 0.23.6
+hyperfine: hyperfine 2.0.0
