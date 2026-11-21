@@ -5,7 +5,6 @@ set -euo pipefail
 B=$(cd "$(dirname "$0")/.." && pwd)
 cd "$B"
 SIZES=${*:-10 50 1000 10000}
-rm -rf cases
 mkdir -p cases sets
 
 # Every a11y rule, for the "no checks" Reuben case.
@@ -48,6 +47,7 @@ zola_case() { # name set highlight(on|off)
 }
 
 for N in $SIZES; do
+  rm -rf cases/*-"$N"
   # Hugo and Zola get `$x$` as plain text. Reuben gets `\$x\$`, which renders the same text whether or not
   # its math parsing is on, so every tool emits the same prose.
   node scripts/gen.mjs "$N" "sets/$N"
