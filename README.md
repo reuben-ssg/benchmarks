@@ -62,6 +62,8 @@ Changes to `scripts/` or the workflow also run a size-50 smoke test on pull requ
 
 These runs were made with scripts that this repository's scripts were cleaned up from, so file paths inside them point at the original scratch folders.
 
+Made with love by [@nickvigilante](https://github.com/nickvigilante).
+
 ## License
 
 Licensed under either of
