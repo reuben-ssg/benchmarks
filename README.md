@@ -22,7 +22,7 @@ The output folder is deleted before every run, so every build is a fresh one.
 ## Running it
 
 You need Node, hyperfine, Hugo, Zola and a Reuben binary.
-The scripts are written for macOS: they read the load average and power source to wait for a quiet machine.
+On macOS the scripts read the load average and power source to wait for a quiet machine; on Linux they check only the load, and `QUIET=0` skips the wait.
 
 ```sh
 scripts/setup.sh                      # generates sets/ and cases/ for 10, 50, 1,000 and 10,000 pages
@@ -32,6 +32,22 @@ REUBEN=$(command -v reuben) scripts/run.sh
 `scripts/run.sh 1000` runs one size.
 Set `BASELINE` to a second Reuben binary to time it alongside, for before-and-after comparisons.
 Each run writes `results/latest/`, including the tool versions and machine load; copy it into `results/<date>/` to keep it.
+
+## Running on GitHub Actions
+
+The `bench` workflow runs the benchmarks on an `ubuntu-24.04` runner, so a run doesn't need your laptop.
+Start it from the Actions tab, or with the GitHub CLI:
+
+```sh
+gh workflow run bench.yml -f reuben_ref=my-branch -f baseline_ref=main
+```
+
+The inputs are `reuben_ref` (default `main`), `baseline_ref` (default none), `sizes` (default `"1000 10000"`), and `hash_case` (time Reuben with asset hashing on).
+The results land in the run's summary, and `results/latest` is uploaded as the `bench-<run id>` artifact.
+
+Shared runners are noisier than a quiet laptop, and they are a different machine, so their absolute numbers aren't comparable to the published macOS results.
+What CI runs are good for is the interleaved before-and-after comparison: set `baseline_ref`, and both builds are timed in the same hyperfine run on the same runner.
+Changes to `scripts/` or the workflow also run a size-50 smoke test on pull requests.
 
 ## Results
 
