@@ -54,6 +54,7 @@ for N in $SIZES; do
   node scripts/gen.mjs "$N" "sets/$N-mathtext" --math-text
   reuben_case "reuben-bare-$N" "$N-mathtext" off
   reuben_case "reuben-bare-noback-$N" "$N-mathtext" off '[markdown]\nfootnote_backlinks = false\n'
+  reuben_case "reuben-bare-hash-$N" "$N-mathtext" off '[assets]\nhash = true\nheaders = true\n'
   reuben_case "reuben-bare-checks-$N" "$N-mathtext" on
   hugo_case "hugo-bare-$N" "$N" on
   hugo_case "hugo-nohl-$N" "$N" off
