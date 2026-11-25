@@ -49,6 +49,21 @@ Shared runners are noisier than a quiet laptop, and they are a different machine
 What CI runs are good for is the interleaved before-and-after comparison: set `baseline_ref`, and both builds are timed in the same hyperfine run on the same runner.
 Changes to `scripts/` or the workflow also run a size-50 smoke test on pull requests.
 
+## Profiling on GitHub Actions
+
+The `profile` workflow shows where Reuben's CPU time goes on Linux, next to Zola's.
+It builds Reuben and Zola with symbols and frame pointers, then runs each single-threaded under `perf stat`, `strace -c`, and `perf record`.
+Start it from the Actions tab, or with the GitHub CLI:
+
+```sh
+gh workflow run profile.yml -f reuben_ref=my-branch -f size=10000
+```
+
+The inputs are `reuben_ref` (default `main`), `size` (default `10000`), and `zola_version` (default `0.23.6`).
+It also times Reuben at `--jobs 1`, `2`, and `4`, and with no `--jobs` flag, to see how threads change the CPU time.
+The summary shows the counters, the top self-time symbols, and the syscall counts.
+The `profile-<run id>` artifact holds the full reports and a flame graph (`.svg`) per tool.
+
 ## Results
 
 `results/2026-11-21/` is the Reuben lean branch, the work planned for 0.2.0, against Hugo and Zola.
