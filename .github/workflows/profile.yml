@@ -59,7 +59,8 @@ jobs:
         run: |
           set -euo pipefail
           if ! zola --version 2>/dev/null | grep -qF "$ZOLA_VERSION"; then
-            cargo install zola --version "$ZOLA_VERSION" --locked
+            # Zola isn't published to crates.io; build the release tag from its repository.
+            cargo install --git https://github.com/getzola/zola --tag "v$ZOLA_VERSION" --locked zola
           fi
           zola --version
 
