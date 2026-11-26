@@ -17,9 +17,16 @@ const bytes = (d) => {
   }
   return n;
 };
+// Where each tool writes, read from its command line.
 const outDir = (cmd) => {
-  const m = cmd.match(/--(?:root|source) (\S+)/);
-  return m ? path.join(m[1], cmd.startsWith('hugo') || cmd.startsWith('zola') ? 'public' : 'dist') : null;
+  const tool = path.basename(cmd.split(' ')[0]);
+  const arg = (re) => cmd.match(re)?.[1] ?? null;
+  const root = arg(/--(?:root|source) (\S+)/);
+  if (tool === 'hugo' || tool === 'zola') return root && path.join(root, 'public');
+  if (tool === 'eleventy') return arg(/--output=(\S+)/);
+  if (tool === 'jekyll') return arg(/--destination (\S+)/);
+  if (tool === 'mdbook') return arg(/--dest-dir (\S+)/);
+  return root && path.join(root, 'dist');
 };
 
 const sizes = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => parseInt(f)).sort((a, b) => a - b);

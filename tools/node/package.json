@@ -1,0 +1,12 @@
+{
+  "name": "reuben-benchmarks-node-tools",
+  "private": true,
+  "description": "Pinned Node-based static site generators for the benchmarks. Exact versions only.",
+  "license": "(MIT OR Apache-2.0)",
+  "dependencies": {
+    "@11ty/eleventy": "3.1.8",
+    "astro": "7.4.10",
+    "markdown-it-footnote": "4.0.0",
+    "@astrojs/starlight": "0.42.10"
+  }
+}

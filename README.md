@@ -14,14 +14,35 @@ Each page has headings, lists, links, a footnote, a table and one Rust code bloc
 | `reuben, bare + checks` | Reuben with every accessibility and link check on |
 | `hugo, bare, highlighting on` / `off` | Hugo with its default code highlighting, and with `codeFences = false` |
 | `zola, bare, highlighting on` / `off` | Zola with a highlighting theme, and without one |
+| `eleventy, bare` | Eleventy with a Nunjucks layout, the footnote plugin, and no highlighting plugin |
+| `astro, bare, highlighting off` | Astro with a content collection, one page route, no integrations, and `syntaxHighlight: false` |
+| `starlight, defaults` | Starlight with its defaults, so its theme, scripts, search index and highlighting are all included |
+| `jekyll, bare, highlighting off` | Jekyll with a one-file layout, kramdown, and highlighting turned off |
+| `mdbook, bare` | mdBook with a bare `index.hbs`, search and the print page off, and highlighting left to the browser |
 
 The "highlighting off" cases compare like with like, since Reuben doesn't highlight code unless a site turns it on.
+Eleventy, Astro, Starlight, Jekyll and mdBook build the same generated pages as the others.
+They need a little translation: Hugo, Zola, Astro, and Jekyll read the front matter as it is, Eleventy gets the layout from a data file, and mdBook has no front matter, so `scripts/mdbook-src.mjs` strips it, writes the title as a heading, and lists every page in `SUMMARY.md`.
+Starlight necessarily ships its theme, so its numbers show what a docs site costs by default, not a bare layout.
+The one change to Starlight is a one-link sidebar, because the default sidebar lists every page on every page, which grows with the square of the page count and would not finish at 10,000 pages.
+Astro and Starlight also write `.astro` and `node_modules/.astro` caches, which are deleted before every run with the output folder.
+mdBook copies its theme files (CSS, JavaScript and fonts) into every build, so its byte count includes them.
+There is no highlighting-on variant for these tools yet.
+
 Each size runs every case interleaved in one [hyperfine](https://github.com/sharkdp/hyperfine) run, so background noise hits them all equally: 15 runs after 2 warm-ups, 5 runs at 10,000 pages.
 The output folder is deleted before every run, so every build is a fresh one.
 
 ## Running it
 
 You need Node, hyperfine, Hugo, Zola and a Reuben binary.
+Eleventy, Astro, Starlight, Jekyll and mdBook are optional: `scripts/setup.sh` and `scripts/run.sh` skip any that isn't installed and say so, so a run with only Hugo and Zola still works.
+Set `REQUIRE_TOOLS=1` to make a missing tool an error instead, as the workflow does.
+
+The Node tools (Eleventy, Astro and Starlight) share one install at the exact versions in `tools/node/package.json`.
+Run `npm ci` in `tools/node` once, and every case links to that `node_modules`, so no install ever runs inside a timed command.
+Jekyll is found on your `PATH`, from the pinned `tools/ruby/Gemfile` (`bundle install` in `tools/ruby`), and runs without Bundler so Bundler's start-up isn't timed.
+mdBook is found on your `PATH` too.
+The tool versions are written to `results/latest/versions.txt`.
 On macOS the scripts read the load average and power source to wait for a quiet machine; on Linux they check only the load, and `QUIET=0` skips the wait.
 
 ```sh
