@@ -19,6 +19,7 @@ on:
   pull_request:
     paths:
       - "scripts/**"
+      - "tools/**"
       - ".github/workflows/bench.yml"
 
 permissions:
@@ -73,7 +74,7 @@ jobs:
         run: cargo build --release --locked -p reuben
         working-directory: baseline-src
 
-      - name: Install hyperfine, Hugo, and Zola
+      - name: Install hyperfine, Hugo, Zola, and mdBook
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/tools" "$HOME/.local/bin"
@@ -82,11 +83,34 @@ jobs:
           sudo dpkg -i hyperfine_2.0.0_amd64.deb
           curl -fsSL https://github.com/gohugoio/hugo/releases/download/v0.170.1/hugo_0.170.1_linux-amd64.tar.gz | tar -xz -C "$HOME/.local/bin" hugo
           curl -fsSL https://github.com/getzola/zola/releases/download/v0.23.6/zola-v0.23.6-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C "$HOME/.local/bin" zola
+          curl -fsSL https://github.com/rust-lang/mdBook/releases/download/v0.5.4/mdbook-v0.5.4-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C "$HOME/.local/bin" mdbook
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: lts/*
+
+      # Eleventy, Astro, and Starlight share one install at exact versions (tools/node/package-lock.json).
+      # Each case links to it, so nothing installs inside a timed command.
+      - name: Install Eleventy, Astro, and Starlight
+        run: npm ci
+        working-directory: tools/node
+
+      - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1.338.0
+        with:
+          ruby-version: "3.3.6"
+
+      - name: Install Jekyll
+        run: |
+          set -euo pipefail
+          if [ -f Gemfile.lock ]; then
+            bundle config set --local frozen true
+          fi
+          bundle install
+          echo "--- Gemfile.lock ---"
+          cat Gemfile.lock
+          jekyll --version
+        working-directory: tools/ruby
 
       - name: Generate the cases
         run: scripts/setup.sh $SIZES
@@ -94,6 +118,7 @@ jobs:
       - name: Run the benchmarks
         run: |
           export QUIET=0
+          export REQUIRE_TOOLS=1
           export REUBEN="$GITHUB_WORKSPACE/reuben-src/target/release/reuben"
           if [ -n "$BASELINE_REF" ]; then
             export BASELINE="$GITHUB_WORKSPACE/baseline-src/target/release/reuben"
