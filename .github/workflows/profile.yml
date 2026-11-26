@@ -59,7 +59,8 @@ jobs:
         run: |
           set -euo pipefail
           if ! zola --version 2>/dev/null | grep -qF "$ZOLA_VERSION"; then
-            cargo install zola --version "$ZOLA_VERSION" --locked
+            # Zola isn't published to crates.io; build the release tag from its repository.
+            cargo install --git https://github.com/getzola/zola --tag "v$ZOLA_VERSION" --locked zola
           fi
           zola --version
 
@@ -133,7 +134,8 @@ jobs:
           }
 
           profile_tool reuben "$C/reuben-bare-$SIZE/dist" "$REUBEN" build --root "$C/reuben-bare-$SIZE" --jobs 1
-          RAYON_NUM_THREADS=1 profile_tool zola "$C/zola-bare-$SIZE/public" "$ZOLA" --root "$C/zola-bare-$SIZE" build
+          # zola-nohl: highlighting off, like the Reuben bare case.
+          RAYON_NUM_THREADS=1 profile_tool zola "$C/zola-nohl-$SIZE/public" "$ZOLA" --root "$C/zola-nohl-$SIZE" build
 
           # Thread sweep, Reuben only. The last command has no --jobs flag.
           D=$C/reuben-bare-$SIZE
